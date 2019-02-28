@@ -25,6 +25,7 @@ $(document).ready(function () {
             mcList: null,
             loading: false,
             showHomeTable: false,
+            showCultureTables: false,
             ccGens: [],
             mcGens: [],
             ccHeaders: [],
@@ -51,7 +52,25 @@ $(document).ready(function () {
 
         },
         methods: {
+            goHome: function () {
+                this.showHomeTable = true;
+            },
+            populateSequenceIds: function() {
+                var seq = $.querySelector("#seq-dropdown");
+                this.graph_seq_id.addChild($.create('button'));
+                // query for the different seq_ids for the culture
+                // populate the vue with those seq_ids, let them be selected
+            },
+            populateGenes: function() {
+                // query for the genes for the selected seq_ids
+                // populate the vue with the genes, let them be selected
+            },
+            populatePositions: function() {
+                // query for the positions for the the selected genes
+                // populate the vue with the positions, let them be selected
+            },
             reset: function () {
+                console.log("in reset");
                 this.ccGens = [];
                 this.mcGens = [];
                 this.ccHeaders = [];
@@ -64,6 +83,7 @@ $(document).ready(function () {
                 this.reRender = false;
             },
             getCultures: function (event) {
+                console.log("in getCultures");
                 this.reset();
                 this.disableSelect = true;
                 this.selectButtonMsg = "Processing ... ";
@@ -129,6 +149,7 @@ $(document).ready(function () {
                 });
             },
             processResults: function (result, cultureType) {
+                console.log("in processResults");
                 var self = this;
                 var tempGenList = [];
 
@@ -170,6 +191,7 @@ $(document).ready(function () {
                 }
             },
             fillEmptySlots: function (cultureGens, header, requireCompare) {
+                console.log("in fillEmptySlots");
                 var self = this;
                 var gensList = cultureGens.map(function (currCulture) {
                     return currCulture.generations
@@ -193,6 +215,7 @@ $(document).ready(function () {
                 });
             },
             normalizeHeader: function () {
+                console.log("in normalizeHeader");
                 var base;
                 var normalize;
                 if (this.ccHeaders.length > this.mcHeaders.length) {
@@ -222,9 +245,11 @@ $(document).ready(function () {
 
             // this function is to change the state of reRender variable and help determine what corresponding table should be displayed
             reactToButtons: function(){
+                console.log("in reactToButtons");
                 this.reRender = !this.reRender;
             },
             generateCCTable: function(event){
+                console.log("in generateCCTable");
                 this.showHomeTable = false;
                 this.reRenderMCM = false;
                 this.reRenderCCM = true
@@ -349,6 +374,7 @@ $(document).ready(function () {
                 });
             },
             generateMCTable: function(event){
+                console.log("in generateMCTable");
                 this.showHomeTable = false;
                 this.reRenderMCM = true;
                 this.reRenderCCM = false;
@@ -471,6 +497,7 @@ $(document).ready(function () {
                 });
             },
             generateCompareTable: function(event){
+                console.log("in generateCompareTable");
                 this.showHomeTable = false;
                 this.reRenderMCM = false;
                 this.reRenderCCM = false;
@@ -583,6 +610,7 @@ $(document).ready(function () {
                 });
             },
             generateCompareGraph: function(event) {
+                console.log("in generateCompareGraph");
                 this.showHomeTable = false;
                 this.reRenderMCM = false;
                 this.reRenderCCM = false;
@@ -689,18 +717,28 @@ $(document).ready(function () {
                 });
             },
             geneSelect: function (e, positions) {
+                console.log("in geneSelect");
                 for (var position in positions) {
                     positions[position] = e.target.checked;
                 }
             },
             seqIdSelect: function (e, gene_map) {
+                console.log("in seqIdSelect");
                 for (var gene in gene_map) {
                     for (var position in gene_map[gene]) {
                         gene_map[gene][position] = e.target.checked;
                     }
                 }
+                var tr = e.target.parentNode.parentNode.parentNode;
+                var gene_table = tr.lastChild.lastChild;
+                if (e.target.checked) {
+                    gene_table.removeAttribute("style");
+                } else {
+                    gene_table.style.display = "none";
+                }
             },
             selectAllSelect: function (e) {
+                console.log("in selectAllSelect");
                 var self = this;
                 self.graph_seq_id['All'] = e.target.checked;
                 for (var seqId in self.graph_seq_id) {
@@ -718,6 +756,7 @@ $(document).ready(function () {
             },
 
             graphCompare: function (event) {
+                console.log("in graphCompare");
                 var chkArray = [];
                 var plotting_data = [];
 

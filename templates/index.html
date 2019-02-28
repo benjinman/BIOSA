@@ -19,15 +19,16 @@
 <div class="" id="app">
     <!--<div class="begin-search" v-show="!reRender">-->
     <div class="begin-search">
-
         <h1>Bio Sequence Analysis</h1>
+        <div class="back-button">
+            <button class="back-button" type="button" v-on:click="goHome();reactToButtons()">TEST</button>
+        </div>
         <div class="btn-group select-collection">
             <!-- Select dropdown button -->
             <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" :disabled="disableSelect === true"
                     id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 {{selectButtonMsg}}
             </button>
-
             <!-- Dropwdown menu options -->
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <a class="dropdown-item" v-for="collection in collections" v-on:click="getCultures">{{collection}}</a>
@@ -42,7 +43,7 @@
     <div class="entire-table" v-show="loading == false" >
         <div class="home-page-table" v-show="showHomeTable">
             <!--generate Coculture Table-->
-            <div class="gen-table" v-show="ccGens.length !== 0">
+            <div class="gen-table" v-show="ccGens.length !== 0 || showCultureTables">
                 <table id="gen-cc-table" class="table table-bordered header-fixed" v-show="!reRender">
                     <thead>
                     <tr>
